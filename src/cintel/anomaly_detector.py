@@ -1,7 +1,7 @@
 """anomaly_detector.py - Project script (example).
 
-Author: Your Name Here
-Date: 2026-mm-dd
+Author: Angie Crews
+Date: 2026-10-27
 
 Static Data
 

@@ -43,6 +43,18 @@ The example pipeline identified **3 anomalous records**.
 
 [View Anomaly Results](https://github.com/denisecase/cintel-02-static-anomalies/blob/main/artifacts/anomalies.csv)
 
+
+## Threshold Experiment
+
+I changed the maximum age threshold from 16 years to 12 years to see how a more restrictive threshold would affect the results.
+
+I predicted that lowering the age threshold would cause more records to be flagged as anomalies because patients older than 12 would now exceed the threshold.
+
+The original project identified 3 anomalies. After changing the age threshold to 12 years, the project identified 8 anomalies.
+
+This experiment showed that the choice of threshold can significantly affect the results. If a threshold is too restrictive, normal observations may be flagged as anomalies, creating false positives.
+
+
 ## Interpretation
 
 The results demonstrate that threshold-based detection

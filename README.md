@@ -1,15 +1,15 @@
 # cintel-02-static-anomalies
 
 [![Python 3.14](https://img.shields.io/badge/python-3.14%2B-blue?logo=python)](pyproject.toml)
-[![CI](https://github.com/denisecase/cintel-02-static-anomalies/actions/workflows/ci-python-zensical.yml/badge.svg)](https://github.com/denisecase/cintel-02-static-anomalies/actions/workflows/ci-python-zensical.yml)
-[![Documentation](https://img.shields.io/badge/docs-site-blue?logo=github)](https://denisecase.github.io/cintel-02-static-anomalies/)
+[![CI](https://github.com/Angie-Crews/cintel-02-static-anomalies/actions/workflows/ci-python-zensical.yml/badge.svg)](https://github.com/Angie-Crews/cintel-02-static-anomalies/actions/workflows/ci-python-zensical.yml)
+[![Documentation](https://img.shields.io/badge/docs-site-blue?logo=github)](https://angie-crews.github.io/cintel-02-static-anomalies/)
 
 [![uv managed](https://img.shields.io/badge/uv-managed-DE5FE9)](https://docs.astral.sh/uv/)
 [![ty type checked](https://img.shields.io/badge/ty-type_checked-2F80ED)](https://docs.astral.sh/ty/)
 [![Zensical docs](https://img.shields.io/badge/Zensical-docs-purple)](https://zensical.org/)
 [![MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
-> Detect unusual observations in static data using rule-based anomaly detection.
+ > Detect unusually large Missouri state travel expenditures using static anomaly detection.
 
 ## Project Overview
 
@@ -17,81 +17,94 @@ Author: Angie Crews
 
 Date: 2026 October
 
-This project introduces anomaly detection using a static dataset.
+This project analyzes 2026 Missouri state expenditure data to identify
+unusually large travel expenditures that may warrant further review.
 
-The goal is to load data, identify observations that meet
-defined anomaly criteria, and save the results for review.
+The project uses static anomaly detection to flag travel payments that
+are unusually high compared with other travel expenditures.
 
 The project is configured in
 [pyproject.toml](pyproject.toml).
 
 ## Data
 
-The example uses clinic visit data from `data/`.
+This project uses the
+[2026 Missouri State Expenditures dataset](https://data.mo.gov/Government-Administration/2026-State-Expenditures/gndj-tfr3/about_data)
+from the Missouri Data Portal.
 
-Each observation includes:
+The dataset contains 102,540 expenditure records with information including:
 
-- `age_years` - age in years.
-- `height_inches` - height in inches.
+- Fiscal Year
+- Agency Name
+- Category Description
+- Detail Description
+- Vendor Name
+- Payments Total
 
-The example demonstrates threshold-based detection.
-Thresholds are instructional examples, not clinical standards.
+For this project, I focused on the 37,402 records categorized as
+travel expenditures.
 
 ## Approach
 
-The pipeline uses Polars to read the dataset,
-apply anomaly rules, and save flagged observations.
+The project uses Polars to load and clean the Missouri expenditure data.
+
+The analysis:
+
+- Converts payment amounts to numeric values.
+- Filters the data to include only travel expenditures.
+- Calculates the 99th percentile of travel payments.
+- Uses the 99th percentile as the anomaly threshold.
+- Flags unusually large travel expenditures for further review.
+- Summarizes the flagged expenditures by state agency.
+- Creates a visualization of the top 10 agencies by number of flagged expenditures.
 
 Explore these project components:
 
 - [pyproject.toml](pyproject.toml) - project configuration and dependencies.
-- [src/cintel/anomaly_detector.py](src/cintel/anomaly_detector.py) - anomaly detection pipeline.
+- [src/cintel/expenditure_anomaly_detector.py](src/cintel/expenditure_anomaly_detector.py) - custom anomaly detection pipeline.
 - [data/](data/) - input data.
-- [artifacts/](artifacts/) - generated results.
+- [artifacts/](artifacts/) - generated anomaly results.
+- [docs/](docs/) - project documentation and visualization.
 - [tests/](tests/) - automated tests.
 - [.github/workflows/](.github/workflows/) - automated checks and documentation deployment.
-- [docs/](docs/) - project documentation.
 
 ## Run the Project
 
 Follow the [Professional Python Workflow Guide](https://denisecase.github.io/pro-analytics-02/)
 to set up your machine and project environment.
 
-From a VS Code terminal in the project root:
+Download the
+[2026 Missouri State Expenditures dataset](https://data.mo.gov/Government-Administration/2026-State-Expenditures/gndj-tfr3/about_data)
+and save the CSV file in the `data/` folder.
+
+From a VS Code terminal in the project root, run:
 
 ```shell
-uv run python -m cintel.anomaly_detector
-```
-
-## Run the Reactive App
-
-From a VS Code terminal in the project root
-(hit CTRL + c to quit):
-
-```shell
-uv run marimo run  src/cintel/app.py
+uv run python -m cintel.expenditure_anomaly_detector
 ```
 
 ## Results
 
-The pipeline identifies observations that
-meet the defined anomaly criteria
-and writes the flagged records to artifacts/anomalies.csv.
-Review the generated CSV to understand which observations were flagged
-and why.
+The analysis identified 404 unusually large travel expenditures
+across 23 Missouri state agencies.
 
-Successful execution produces:
+The 99th percentile of travel payments was $10,110.40.
+Travel expenditures at or above this amount were flagged for further review.
 
-```shell
-========================
-Pipeline executed successfully!
-========================
-```
+The Legislature had the highest number of flagged travel expenditures.
 
-A `project.log` file is created in the project root.
+The flagged records are saved to:
 
-This confirms that the Python pipeline executes
-and the logging system works.
+`artifacts/missouri_travel_anomalies.csv`
+
+The project also creates a visualization showing the top 10 agencies
+by number of flagged travel expenditures:
+
+`docs/images/travel_anomalies_by_agency.png`
+
+A flagged expenditure does not necessarily indicate an error or improper
+spending. It only indicates that the payment was unusually large based
+on the threshold used in this analysis.
 
 ## Verification
 
@@ -103,21 +116,22 @@ uv run pytest
 
 ## Project Documentation
 
-The [hosted documentation site](https://denisecase.github.io/cintel-02-static-anomalies/)
+The [hosted documentation site](https://angie-crews.github.io/cintel-02-static-anomalies/)
 is published using Zensical and GitHub Pages.
 
-The documentation site is used to present the project report,
-covering such sections as data, methods, results, visualizations,
-interpretation, and conclusions.
+The documentation presents the Missouri travel expenditure analysis,
+including the data, methods, results, visualization, interpretation,
+and conclusions.
 
 ## CI/CD and GitHub Actions
 
 This project includes continuous integration and continuous deployment (CI/CD)
-to check project files and publish the docs.
+to check project files and publish the documentation.
+
 GitHub Actions include:
 
-- [CI: Python and Documentation Checks](https://github.com/denisecase/cintel-02-static-anomalies/actions/workflows/ci-python-zensical.yml)
-- [CD: Documentation Deployment](https://github.com/denisecase/cintel-02-static-anomalies/actions/workflows/deploy-zensical.yml)
+- [CI: Python and Documentation Checks](https://github.com/Angie-Crews/cintel-02-static-anomalies/actions/workflows/ci-python-zensical.yml)
+- [CD: Documentation Deployment](https://github.com/Angie-Crews/cintel-02-static-anomalies/actions/workflows/deploy-zensical.yml)
 
 ## Developer Reference
 
@@ -202,7 +216,8 @@ testing, documentation, and code quality.
 
 ## Links
 
-- [Hosted Documentation](https://denisecase.github.io/cintel-02-static-anomalies/)
+- [Hosted Documentation](https://angie-crews.github.io/cintel-02-static-anomalies/)
+- [2026 Missouri State Expenditures Dataset](https://data.mo.gov/Government-Administration/2026-State-Expenditures/gndj-tfr3/about_data)
 - [Professional Python Workflow Guide](https://denisecase.github.io/pro-analytics-02/)
 - [Citation](CITATION.cff)
 - [License](LICENSE)

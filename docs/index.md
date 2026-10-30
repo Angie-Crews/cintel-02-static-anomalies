@@ -43,7 +43,6 @@ The example pipeline identified **3 anomalous records**.
 
 [View Anomaly Results](https://github.com/denisecase/cintel-02-static-anomalies/blob/main/artifacts/anomalies.csv)
 
-
 ## Threshold Experiment
 
 I changed the maximum age threshold from 16 years to 12 years to see how a more restrictive threshold would affect the results.
@@ -54,6 +53,38 @@ The original project identified 3 anomalies. After changing the age threshold to
 
 This experiment showed that the choice of threshold can significantly affect the results. If a threshold is too restrictive, normal observations may be flagged as anomalies, creating false positives.
 
+## Custom Project: Missouri Travel Expenditures
+
+For my custom project, I analyzed 2026 Missouri state expenditure data
+to identify unusually large travel expenditures.
+
+The dataset contained 102,540 expenditure records. Of those,
+37,402 were categorized as travel expenditures.
+
+### Method
+
+I converted the payment amounts to numeric values and filtered the data
+to include only travel expenditures. I used the 99th percentile of
+travel payments as the anomaly threshold.
+
+The calculated threshold was $10,110.40. Travel expenditures at or
+above this amount were flagged for further review.
+
+### Results
+
+The analysis identified 404 flagged travel expenditures across
+23 state agencies.
+
+### Visualization
+
+![Top 10 Agencies by Flagged Travel Expenditures](images/travel_anomalies_by_agency.png)
+
+The Legislature had the largest number of flagged travel expenditures
+with 143 records. Social Services had 40, and the Judiciary had 38.
+
+These results do not mean the expenditures were incorrect or improper.
+They identify unusually large travel payments based on the selected
+statistical threshold and may warrant additional review.
 
 ## Interpretation
 
